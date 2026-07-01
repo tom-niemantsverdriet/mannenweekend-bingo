@@ -1,0 +1,52 @@
+// Sense launcher styling for the Mannenweekend Bingo apps
+//
+// Styles the app tiles in the dock/launchpad and the icon in each app window's title
+// bar. Each app gets a soft pastel gradient matching the bingo palette and an icon
+// from the sense-ui-icons set.
+//
+// @author Tom Niemantsverdriet <tom@lumitec.nl>
+
+// Squares — violet
+.sense-app.app-square-menu-item {
+    background: linear-gradient(320deg, #a78bfa, #8b7bf0);
+    box-shadow: 0 5px 15px rgba(139, 123, 240, 0.55);
+
+    &::before {
+        filter: brightness(0) invert(1) drop-shadow(0 5px 8px rgba(0, 0, 0, 0.3));
+        background-image: image(sense-ui-icons/grid.svg);
+    }
+}
+
+.sense-app-window.app-square-menu-item .sense-app-title-icon {
+    background-image: image(sense-ui-icons/grid.svg);
+}
+
+// Participants — mint
+.sense-app.app-user-menu-item {
+    background: linear-gradient(320deg, #6ee7b7, #34d399);
+    box-shadow: 0 5px 15px rgba(52, 211, 153, 0.5);
+
+    &::before {
+        filter: brightness(0) invert(1) drop-shadow(0 5px 8px rgba(0, 0, 0, 0.3));
+        background-image: image(sense-ui-icons/group.svg);
+    }
+}
+
+.sense-app-window.app-user-menu-item .sense-app-title-icon {
+    background-image: image(sense-ui-icons/group.svg);
+}
+
+// Completed squares — coral
+.sense-app.app-square-completed-menu-item {
+    background: linear-gradient(320deg, #fda4af, #fb7185);
+    box-shadow: 0 5px 15px rgba(251, 113, 133, 0.5);
+
+    &::before {
+        filter: brightness(0) invert(1) drop-shadow(0 5px 8px rgba(0, 0, 0, 0.3));
+        background-image: image(sense-ui-icons/checklist.svg);
+    }
+}
+
+.sense-app-window.app-square-completed-menu-item .sense-app-title-icon {
+    background-image: image(sense-ui-icons/checklist.svg);
+}

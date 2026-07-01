@@ -1,0 +1,53 @@
+services:
+    php:
+        container_name: docker-lumi-php
+        hostname: docker-lumi
+        image: lumi:php-8.4
+        labels:
+            - lumi.pageflip.service=php
+        volumes:
+            - mysql_socket:/run/mysqld
+        environment:
+            DB_NAME: database
+            DB_USER: user
+            DB_PASSWORD: password
+    mysql:
+        container_name: docker-lumi-db
+        image: lumi:mysql
+        labels:
+            - lumi.pageflip.service=mysql
+        environment:
+            DB_NAME: database
+            DB_USER: user
+            DB_PASSWORD: password
+        volumes:
+            - .data/backups:/var/www/app/.data/backups
+            - mysql_socket:/run/mysqld
+            - mysql:/var/lib/mysql
+    dovecot:
+        container_name: docker-lumi-dovecot
+        image: lumi:pageflip-dovecot
+        profiles: ["disabled"]
+        labels:
+            - lumi.pageflip.service=dovecot
+        volumes:
+          - postfix_spool:/var/spool/postfix
+
+    postfix:
+        container_name: docker-lumi-postfix
+        image: lumi:pageflip-postfix
+        profiles: ["disabled"]
+        labels:
+            - lumi.pageflip.service=postfix
+        volumes:
+          - postfix_spool:/var/spool/postfix
+          - opendkim_keys:/etc/opendkim/keys
+          - smtp_log:/var/log
+
+volumes:
+    mysql_socket:
+    mysql_modified:
+    mysql:
+    postfix_spool:
+    opendkim_keys:
+    smtp_log:
