@@ -95,7 +95,7 @@ body {
 .bingo {
     max-width: 940px;
     margin: 0 auto;
-    padding: 1.75rem 1.25rem 4rem;
+    padding: 28px 20px 64px;
     font-family: $font-body;
     color: $ink;
     -webkit-font-smoothing: antialiased;
@@ -107,9 +107,9 @@ body {
         margin-bottom: 1.25rem;
 
         position: absolute;
-        width: calc(100% - 10px);
-        top: 8px;
-        max-width: calc(940px - 2.5rem);
+        width: calc(100% - 40px);
+        top: 26px;
+        max-width: calc(900px);
     }
 
     &__icon-button {
@@ -682,6 +682,11 @@ body {
 
     .bingo__square {
         border-radius: 13px;
+    }
+
+    .bingo__bar {
+        top: 8px;
+        width: calc(100% - 10px);
     }
 
     .bingo__overlay {

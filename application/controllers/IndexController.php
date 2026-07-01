@@ -25,6 +25,7 @@ class IndexController extends Controller
 
         $this->addScript('build', 'app.build');
         $this->addCSP('script-src', "'unsafe-eval'");
+        $this->setTitleAppendix('');
 
         $metaDescription = 'Hallo ik ben Sfen en welkom bij mijn mannenweekend bingo. Doe mee en win € 1000,- kusjes van Sfen';
 
