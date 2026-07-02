@@ -79,7 +79,7 @@ $shadow-pop: 0 20px 60px rgba(41, 37, 79, 0.22);
 
 // Framework resets: neutralise the CMS body/heading defaults so the app can breathe
 body {
-    background: $page;
+    background: $page !important;
 }
 
 #content {
@@ -190,6 +190,8 @@ body {
             font-size: clamp(1.7rem, 6vw, 2.2rem);
             font-weight: 550;
             letter-spacing: -0.03em;
+            pointer-events: none;
+            padding-left: 0;
         }
     }
 
