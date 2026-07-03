@@ -3,6 +3,7 @@ import squares from './stores/squares';
 import users from './stores/users';
 import squaresCompleted from './stores/squaresCompleted';
 import currentUser from './stores/currentUser';
+import comments from './stores/comments';
 
 let store = createStore({
     namespaced: true,
@@ -10,7 +11,8 @@ let store = createStore({
         squares,
         users,
         squaresCompleted,
-        currentUser
+        currentUser,
+        comments
     },
 
     actions:

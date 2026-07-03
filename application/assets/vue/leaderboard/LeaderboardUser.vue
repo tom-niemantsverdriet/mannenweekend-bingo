@@ -20,27 +20,20 @@
         </p>
 
         <ul v-else class="leaderboard-user__list">
-            <li
+            <bingo-log-item
                 v-for="offense in offenses"
                 :key="offense.getID()"
-                class="leaderboard-user__item"
-            >
-                <div class="leaderboard-user__item-title">{{ offense.getSquare() }}</div>
-                <div class="leaderboard-user__item-reason" v-if="offense.getReason()">
-                    &ldquo;{{ offense.getReason() }}&rdquo;
-                </div>
-                <div class="leaderboard-user__item-meta">
-                    gemeld door {{ offense.getPostedBy() }}
-                    <span v-if="offense.getCompletedAt()">
-                        &middot; {{ format_datetime(offense.getCompletedAt()) }}
-                    </span>
-                </div>
-            </li>
+                :completion="offense"
+                :clickable="true"
+                @open="openCompletion"
+            ></bingo-log-item>
         </ul>
     </div>
 </template>
 
 <script>
+
+import BingoLogItem from '../bingo/BingoLogItem.vue';
 
 /**
  * LeaderboardUser component
@@ -52,6 +45,11 @@
 export default
 {
     name: 'LeaderboardUser',
+
+    components:
+    {
+        BingoLogItem
+    },
 
     /**
      * Sets the page title on mount
@@ -93,7 +91,20 @@ export default
         {
             return this.squaresCompleted.filter(completion => completion.getOffenderID() === this.userId);
         }
+    },
+
+    methods:
+    {
+        /**
+         * Opens the detail page for a completed square
+         * @param {SquareCompletedRecord} completion The completion to open
+         * @return {void}
+         * @author Tom Niemantsverdriet <tom@lumitec.nl>
+         */
+        openCompletion(completion)
+        {
+            this.$router.push({name: 'app.bingo.log.detail', params: {id: completion.getID()}});
+        }
     }
 }
 </script>
-

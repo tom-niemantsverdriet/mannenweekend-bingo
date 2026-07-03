@@ -88,6 +88,16 @@ class SquareCompletedRecord extends ActiveRecord
     {
         return this.get('reason');
     }
+
+    /**
+     * Returns the number of comments posted on this completion
+     * @return {number} The comment count
+     * @author Tom Niemantsverdriet <tom@lumitec.nl>
+     */
+    getCommentCount()
+    {
+        return this.get('comment_count') || 0;
+    }
 }
 
 export default SquareCompletedRecord;

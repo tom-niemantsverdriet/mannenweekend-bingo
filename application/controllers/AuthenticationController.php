@@ -3,6 +3,7 @@
 namespace TomNiemantsverdriet\MannenweekendBingo\Controllers;
 
 use Lumi\Core\Controller;
+use Lumi\SessionManager\Session;
 use TomNiemantsverdriet\MannenweekendBingo\Models\Static\User;
 
 /**
@@ -29,6 +30,9 @@ class AuthenticationController extends Controller
         if ($user !== null) {
             $_SESSION['user_id'] = $user->getID();
         }
+
+        $session = Session::getInstance();
+        $session->upgradeToPersistent();
 
         redirect('/');
     }

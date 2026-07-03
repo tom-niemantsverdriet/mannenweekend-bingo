@@ -49,34 +49,13 @@
             </p>
 
             <ul v-else class="bingo__log-list">
-                <li
+                <bingo-log-item
                     v-for="completion in squaresCompleted"
                     :key="completion.getID()"
-                    class="bingo__log-item"
-                >
-                    <div class="bingo__log-avatar">
-                        <img
-                            v-if="completion.getOffenderThumbnail()"
-                            :src="completion.getOffenderThumbnail()"
-                            :alt="completion.getOffender()"
-                        >
-                        <span v-else class="bingo__log-initial">
-                            {{ (completion.getOffender() || '?').charAt(0) }}
-                        </span>
-                    </div>
-                    <div class="bingo__log-body">
-                        <div class="bingo__log-title">{{ completion.getSquare() }}: <strong>{{ completion.getOffender() }}</strong></div>
-                        <div class="bingo__log-reason" v-if="completion.getReason()">
-                            &ldquo;{{ completion.getReason() }}&rdquo;
-                        </div>
-                        <div class="bingo__log-meta">
-                            Gemeld door {{ completion.getPostedBy() }}
-                            <span class="bingo__log-date" v-if="completion.getCompletedAt()">
-                                &middot; {{ format_datetime(completion.getCompletedAt()) }}
-                            </span>
-                        </div>
-                    </div>
-                </li>
+                    :completion="completion"
+                    :clickable="true"
+                    @open="openCompletion"
+                ></bingo-log-item>
             </ul>
         </section>
 
@@ -130,6 +109,7 @@
 <script>
 
 import {enableNotifications, disableNotifications, notificationsSupported} from '../../js/app/notifications';
+import BingoLogItem from './BingoLogItem.vue';
 
 /**
  * Bingo component
@@ -141,6 +121,11 @@ import {enableNotifications, disableNotifications, notificationsSupported} from 
 export default
 {
     name: 'Bingo',
+
+    components:
+    {
+        BingoLogItem
+    },
 
     data()
     {
@@ -264,6 +249,17 @@ export default
         },
 
         /**
+         * Opens the detail page for a completed square
+         * @param {SquareCompletedRecord} completion The completion to open
+         * @return {void}
+         * @author Tom Niemantsverdriet <tom@lumitec.nl>
+         */
+        openCompletion(completion)
+        {
+            this.$router.push({name: 'app.bingo.log.detail', params: {id: completion.getID()}});
+        },
+
+        /**
          * Turns push notifications on or off for the authenticated participant
          * @return {Promise<void>}
          * @author Tom Niemantsverdriet <tom@lumitec.nl>
@@ -339,4 +335,3 @@ export default
     }
 }
 </script>
-

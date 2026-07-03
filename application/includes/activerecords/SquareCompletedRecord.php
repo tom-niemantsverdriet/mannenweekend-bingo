@@ -47,14 +47,19 @@ class SquareCompletedRecord extends ActiveRecord
 
     /**
      * Returns the data that is exposed through the API
+     * @param int $commentCount The number of comments on this completion
      * @return array The API data for this completion
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function getAPIData(): array
+    public function getAPIData(int $commentCount = 0): array
     {
+        // Load referenced records for display fields
+
         $square = $this->getSquareRecord();
         $offender = $this->getOffenderRecord();
         $postedBy = $this->getPostedByRecord();
+
+        // Return the public completion payload
 
         return [
             'id' => $this->getID(),
@@ -67,6 +72,7 @@ class SquareCompletedRecord extends ActiveRecord
             'posted_by_id' => $this->getPostedBy(),
             'posted_by' => $postedBy?->getName(),
             'reason' => $this->getReason(),
+            'comment_count' => $commentCount,
         ];
     }
 }

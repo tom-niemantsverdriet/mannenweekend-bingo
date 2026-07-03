@@ -202,8 +202,9 @@ body {
 
     &__grid {
         display: grid;
-        grid-template-columns: repeat(var(--columns, 5), 1fr);
+        grid-template-columns: repeat(var(--columns, 5), minmax(0, 1fr));
         gap: 0.6rem;
+        align-items: stretch;
     }
 
     &__square {
@@ -214,7 +215,10 @@ body {
         text-align: center;
         aspect-ratio: 1 / 1;
         min-width: 0;
+        min-height: 0;
         padding: clamp(0.35rem, 1.6vw, 0.75rem);
+        box-sizing: border-box;
+        overflow: hidden;
         border-radius: 20px;
         background: $surface;
         border: 1px solid $line;
@@ -261,7 +265,9 @@ body {
         -webkit-box-orient: vertical;
         overflow: hidden;
         overflow-wrap: anywhere;
+        word-break: break-word;
         max-width: 100%;
+        max-height: 100%;
     }
 
     &__badge {
@@ -316,6 +322,17 @@ body {
         padding: 0.9rem 1rem;
         @include card;
         border: 1px solid rgba(41, 37, 79, .2);
+
+        &.is-clickable {
+            cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease;
+
+            &:hover {
+                border-color: $violet;
+                transform: translateY(-2px);
+                box-shadow: $shadow-md;
+            }
+        }
     }
 
     &__log-avatar {
@@ -348,6 +365,28 @@ body {
 
     &__log-date {
         color: $subtle;
+    }
+
+    &__log-comments {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        color: $muted;
+        font-size: 0.85rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    &__log-comments-icon {
+        width: 18px;
+        height: 18px;
+        background-image: image(sense-ui-icons/chat.svg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        filter: grayscale(1);
+        opacity: 0.45;
     }
 
     &__overlay {
@@ -496,7 +535,8 @@ body {
 
 // Shared leaderboard page shell
 .leaderboard,
-.leaderboard-user {
+.leaderboard-user,
+.bingo-detail {
     max-width: 620px;
     margin: 0 auto;
     padding: 1.75rem 1.25rem 4rem;
@@ -506,7 +546,8 @@ body {
 }
 
 .leaderboard__bar,
-.leaderboard-user__bar {
+.leaderboard-user__bar,
+.bingo-detail__bar {
     display: flex;
     align-items: center;
     gap: 0.85rem;
@@ -514,7 +555,8 @@ body {
 }
 
 .leaderboard__back,
-.leaderboard-user__back {
+.leaderboard-user__back,
+.bingo-detail__back {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -526,9 +568,13 @@ body {
     background: $surface;
     box-shadow: $shadow-sm;
     color: $ink;
+    padding: 0;
+    appearance: none;
     text-decoration: none;
+    font-family: $font-body;
     font-size: 1.3rem;
     line-height: 1;
+    cursor: pointer;
     transition: transform 0.15s ease, border-color 0.15s ease;
 
     &:hover {
@@ -538,7 +584,8 @@ body {
 }
 
 .leaderboard__title,
-.leaderboard-user__title {
+.leaderboard-user__title,
+.bingo-detail__title {
     margin: 0;
     font-family: $font-head;
     font-size: clamp(1.4rem, 5vw, 1.7rem);
@@ -655,6 +702,108 @@ body {
     }
 }
 
+.bingo-detail {
+    &__completion {
+        margin-bottom: 1rem;
+    }
+
+    &__form {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    &__input {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 0.7rem 0.8rem;
+        border: 1px solid $field-line;
+        border-radius: 12px;
+        font: inherit;
+        color: $ink;
+        background: $surface;
+        box-sizing: border-box;
+
+        &:focus {
+            outline: none;
+            border-color: $violet;
+            box-shadow: 0 0 0 3px $violet-soft;
+        }
+    }
+
+    &__submit {
+        flex: 0 0 auto;
+        padding: 0.7rem 1rem;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background: $violet;
+        color: #ffffff;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+
+        &:disabled {
+            background: $violet-soft;
+            cursor: not-allowed;
+        }
+    }
+
+    &__comments {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &__comment {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.75rem 0.85rem;
+        background: $surface;
+        border: 1px solid $line;
+        border-radius: 14px;
+    }
+
+    &__comment-avatar {
+        @include avatar(34px, 0.85rem);
+    }
+
+    &__comment-body {
+        flex: 1 1 auto;
+        min-width: 0;
+
+        p {
+            margin: 0.25rem 0 0;
+            color: $ink;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+        }
+    }
+
+    &__comment-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.75rem;
+        color: $muted;
+        font-size: 0.82rem;
+
+        strong {
+            color: $ink;
+            font-size: 0.9rem;
+        }
+    }
+
+    &__empty {
+        text-align: center;
+        color: $subtle;
+        padding: 1.5rem 0;
+    }
+}
+
 @keyframes bingo-pop {
     from {
         opacity: 0;
@@ -684,6 +833,7 @@ body {
 
     .bingo__square {
         border-radius: 13px;
+        font-size: clamp(0.55rem, 2.15vw, 0.82rem);
     }
 
     .bingo__bar {
@@ -697,7 +847,7 @@ body {
     }
 
     .bingo__header h1 {
-        font-size: 25px;
+        font-size: 22px;
         position: relative;
         top: 10px;
     }
@@ -710,8 +860,13 @@ body {
     }
 
     .leaderboard,
-    .leaderboard-user {
+    .leaderboard-user,
+    .bingo-detail {
         padding: 1.25rem 0.9rem 3rem;
+    }
+
+    .bingo-detail__form {
+        align-items: stretch;
     }
 
     .bingo__log {

@@ -5,6 +5,7 @@ namespace TomNiemantsverdriet\MannenweekendBingo\AppAPI\Controllers;
 use Exception;
 use TomNiemantsverdriet\MannenweekendBingo\AppAPI\APIController;
 use TomNiemantsverdriet\MannenweekendBingo\AppAPI\PushNotifier;
+use TomNiemantsverdriet\MannenweekendBingo\Models\Comment;
 use TomNiemantsverdriet\MannenweekendBingo\Models\Static\SquareCompleted;
 use TomNiemantsverdriet\MannenweekendBingo\Models\Static\User;
 
@@ -24,10 +25,23 @@ class SquareCompletedController extends APIController
      */
     public function index(): array
     {
-        $result = [];
+        // Collect completions and their identifiers
+
+        $completions = [];
+        $completedIds = [];
 
         foreach (SquareCompleted::findAll()->sort(['completed_at' => -1]) as $completion) {
-            $result[] = $completion->getAPIData();
+            $completions[] = $completion;
+            $completedIds[] = $completion->getID();
+        }
+
+        // Add comment counts to the API payloads
+
+        $commentCounts = Comment::getModel()->countComments($completedIds);
+        $result = [];
+
+        foreach ($completions as $completion) {
+            $result[] = $completion->getAPIData($commentCounts[(int) $completion->getID()] ?? 0);
         }
 
         return $result;
