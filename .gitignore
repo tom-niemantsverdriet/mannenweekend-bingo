@@ -16,3 +16,11 @@ configuration/*.php
 tags
 google-*
 docker-compose.pageflip.yml
+.nvimlog
+gen/
+var/
+data/
+config/*.php
+!config/default.php
+build/
+*/gen/

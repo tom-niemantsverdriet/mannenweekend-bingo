@@ -32,6 +32,6 @@ class IndexController extends Controller
         $this->setTitle("Sfen's mannenweekend bingo");
         $this->setMetaTag('description', $metaDescription);
         $this->setMetaTag('og:description', $metaDescription);
-        $this->setMetaTag('og:image', reroute(BASE_PATH . '/application/assets/images/thumbnail.jpeg'));
+        $this->setMetaTag('og:image', reroute(BASE_PATH . '/src/assets/images/thumbnail.jpeg'));
     }
 }

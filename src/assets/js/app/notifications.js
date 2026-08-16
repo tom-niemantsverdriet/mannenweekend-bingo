@@ -35,7 +35,7 @@ export async function enableNotifications(vapidPublicKey)
         throw new Error('Notificaties zijn niet toegestaan.');
     }
 
-    let registration = await navigator.serviceWorker.register('/application/assets/js/sw.js');
+    let registration = await navigator.serviceWorker.register('/js/sw.js');
     await waitForActivation(registration);
 
     let subscription = await registration.pushManager.getSubscription();

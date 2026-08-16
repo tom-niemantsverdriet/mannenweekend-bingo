@@ -11,11 +11,11 @@ let projectRoot = __dirname;
 let webpackConfig = {
     mode: isProd ? 'production' : 'development',
 
-    entry: path.resolve(projectRoot, 'application/assets/js/app/app.js'),
+    entry: path.resolve(projectRoot, 'src/assets/js/app/app.js'),
 
     output: {
-        path: path.resolve(projectRoot, 'application/assets/js/build'),
-        publicPath: '/application/assets/js/build/',
+        path: path.resolve(projectRoot, 'src/assets/js/build'),
+        publicPath: '/js/build/',
         filename: 'app.build.js',
         chunkFilename: '[name].js',
         clean: true
@@ -26,15 +26,15 @@ let webpackConfig = {
             {
                 test: /\.vue$/,
                 include: [
-                    path.resolve(projectRoot, 'application/assets/vue')
+                    path.resolve(projectRoot, 'src/assets/vue')
                 ],
                 loader: 'vue-loader'
             },
             {
                 test: /\.js$/,
                 include: [
-                    path.resolve(projectRoot, 'application/assets/js'),
-                    path.resolve(projectRoot, 'application/assets/vue')
+                    path.resolve(projectRoot, 'src/assets/js'),
+                    path.resolve(projectRoot, 'src/assets/vue')
                 ]
             },
             {
@@ -123,7 +123,7 @@ function getCliMode(argv)
 
 function loadPackageConfigs(webpackConfig, context)
 {
-    let packageConfigDirectory = path.resolve(projectRoot, 'application/webpack');
+    let packageConfigDirectory = path.resolve(projectRoot, 'src/webpack');
 
     if (!context.fs.existsSync(packageConfigDirectory)) {
         return;

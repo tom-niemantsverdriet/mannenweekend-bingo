@@ -11,8 +11,8 @@ self.addEventListener('push', function (event) {
     let title = 'Mannenweekend Bingo';
     let options = {
         body: 'Er is een nieuw vakje afgevinkt!',
-        icon: '/application/assets/images/icon.png',
-        badge: '/application/assets/images/icon.png',
+        icon: '/img/icon.png',
+        badge: '/img/icon.png',
     };
 
     // Payloadless pushes have no data; fall back to the default message when absent

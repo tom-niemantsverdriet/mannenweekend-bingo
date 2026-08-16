@@ -98,7 +98,6 @@ body {
     padding: 28px 20px 64px;
     font-family: $font-body;
     color: $ink;
-    -webkit-font-smoothing: antialiased;
 
     &__bar {
         display: flex;
@@ -542,7 +541,6 @@ body {
     padding: 1.75rem 1.25rem 4rem;
     font-family: $font-body;
     color: $ink;
-    -webkit-font-smoothing: antialiased;
 }
 
 .leaderboard__bar,
