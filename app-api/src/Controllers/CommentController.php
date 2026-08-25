@@ -3,6 +3,12 @@
 namespace TomNiemantsverdriet\MannenweekendBingo\AppAPI\Controllers;
 
 use Exception;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+use Lumi\Core\Routing\Route as ControllerRoute;
+
 use TomNiemantsverdriet\MannenweekendBingo\AppAPI\APIController;
 use TomNiemantsverdriet\MannenweekendBingo\Models\Comment;
 
@@ -17,10 +23,11 @@ class CommentController extends APIController
 {
     /**
      * Returns the comments for a completed square
-     * @return array The list of comments
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function index(): array
+    public function index(ServerRequestInterface $request): ResponseInterface
     {
         // Determine which completed square to load comments for
 
@@ -39,15 +46,16 @@ class CommentController extends APIController
             $result[] = $comment->getAPIData();
         }
 
-        return $result;
+        return $this->respondWithData( $result);
     }
 
     /**
      * Creates a comment for a completed square under the authenticated participant
-     * @return array The created comment
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function create(): array
+    public function create(ServerRequestInterface $request): ResponseInterface
     {
         $userId = $_SESSION['user_id'] ?? null;
 
@@ -73,6 +81,19 @@ class CommentController extends APIController
             'comment' => $comment,
         ]);
 
-        return Comment::getModel()->find($id)->getAPIData();
+        return $this->respondWithData( Comment::getModel()->find($id)->getAPIData());
+    }
+
+    /**
+     * Returns the intentionally public routes for this ActionController.
+     * @return array The public routes
+     * @author Tom Niemantsverdriet <tom@flowtogether.nl>
+     */
+    public function getRoutes(): array
+    {
+        return [
+            ControllerRoute::get('/comment/index', 'index'),
+            ControllerRoute::post('/comment/create', 'create'),
+        ];
     }
 }

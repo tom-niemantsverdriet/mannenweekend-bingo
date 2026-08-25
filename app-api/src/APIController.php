@@ -3,8 +3,9 @@
 namespace TomNiemantsverdriet\MannenweekendBingo\AppAPI;
 
 use Exception;
-use Lumi\Core\Controller;
-use Lumi\Core\Framework;
+use Psr\Http\Message\ResponseInterface;
+
+use Lumi\Core\ActionController;
 
 /**
  * APIController class.
@@ -14,40 +15,39 @@ use Lumi\Core\Framework;
  *
  * @author Tom Niemantsverdriet <tom@lumitec.nl>
  */
-abstract class APIController extends Controller
+abstract class APIController extends ActionController
 {
     /**
-     * Overwrites the invoke method to return the action result as a JSON envelope
-     * @param string $action The action to invoke
-     * @param array $arguments The arguments to pass to the action
-     * @return mixed The returned value
+     * Executes the action and preserves the established JSON error envelope.
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function invoke(string $action, array $arguments): mixed
+    public function execute(): ResponseInterface
     {
-        header('Content-Type: application/json');
-
         try {
-            $result = parent::invoke($action, $arguments);
-
-            echo json_encode([
-                'status' => 'success',
-                'message' => '',
-                'data' => $result,
-            ]);
+            return parent::execute();
         } catch (Exception $exception) {
-            http_response_code(500);
-
-            echo json_encode([
+            return $this->respondWithJSON([
                 'status' => 'error',
                 'message' => $exception->getMessage(),
                 'data' => null,
-            ]);
+            ], 500);
         }
+    }
 
-        Framework::getInstance()->finish();
-
-        return null;
+    /**
+     * Wraps successful API data in the legacy bingo envelope.
+     * @param mixed $data The response data
+     * @return ResponseInterface The JSON response
+     * @author Tom Niemantsverdriet <tom@lumitec.nl>
+     */
+    protected function respondWithData(mixed $data): ResponseInterface
+    {
+        return $this->respondWithJSON([
+            'status' => 'success',
+            'message' => '',
+            'data' => $data,
+        ]);
     }
 
     /**

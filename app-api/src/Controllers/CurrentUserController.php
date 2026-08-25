@@ -3,6 +3,12 @@
 namespace TomNiemantsverdriet\MannenweekendBingo\AppAPI\Controllers;
 
 use Exception;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+use Lumi\Core\Routing\Route as ControllerRoute;
+
 use TomNiemantsverdriet\MannenweekendBingo\AppAPI\APIController;
 use TomNiemantsverdriet\MannenweekendBingo\AppAPI\PushNotifier;
 use TomNiemantsverdriet\MannenweekendBingo\ActiveRecords\UserRecord;
@@ -21,25 +27,27 @@ class CurrentUserController extends APIController
     /**
      * Returns the authenticated participant (or null) together with the VAPID public key
      * required to subscribe to push notifications.
-     * @return array The current user payload
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function index(): array
+    public function index(ServerRequestInterface $request): ResponseInterface
     {
         $user = $this->getCurrentUser();
 
-        return [
+        return $this->respondWithData( [
             'user' => $user?->getAPIData(),
             'vapid_public_key' => (new PushNotifier())->getPublicKey(),
-        ];
+        ]);
     }
 
     /**
      * Stores the push subscription endpoint URL on the authenticated participant.
-     * @return array The updated user payload
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function subscribe(): array
+    public function subscribe(ServerRequestInterface $request): ResponseInterface
     {
         $user = $this->requireCurrentUser();
         $payload = $this->getRequestPayload();
@@ -51,22 +59,23 @@ class CurrentUserController extends APIController
         $user->setNotificationUrl($payload['url']);
         $user->save();
 
-        return $user->getAPIData();
+        return $this->respondWithData( $user->getAPIData());
     }
 
     /**
      * Clears the push subscription of the authenticated participant.
-     * @return array The updated user payload
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function unsubscribe(): array
+    public function unsubscribe(ServerRequestInterface $request): ResponseInterface
     {
         $user = $this->requireCurrentUser();
 
         $user->setNotificationUrl(null);
         $user->save();
 
-        return $user->getAPIData();
+        return $this->respondWithData( $user->getAPIData());
     }
 
     /**
@@ -99,5 +108,19 @@ class CurrentUserController extends APIController
         }
 
         return $user;
+    }
+
+    /**
+     * Returns the intentionally public routes for this ActionController.
+     * @return array The public routes
+     * @author Tom Niemantsverdriet <tom@flowtogether.nl>
+     */
+    public function getRoutes(): array
+    {
+        return [
+            ControllerRoute::get('/current-user/index', 'index'),
+            ControllerRoute::post('/current-user/subscribe', 'subscribe'),
+            ControllerRoute::post('/current-user/unsubscribe', 'unsubscribe'),
+        ];
     }
 }

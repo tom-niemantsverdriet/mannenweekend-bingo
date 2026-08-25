@@ -2,7 +2,12 @@
 
 namespace TomNiemantsverdriet\MannenweekendBingo\Controllers;
 
-use Lumi\Core\Controller;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+use Lumi\Core\Routing\Route as ControllerRoute;
+
+use Lumi\Core\ActionController;
 
 /**
  *
@@ -12,14 +17,15 @@ use Lumi\Core\Controller;
  *
  * @author Tom Niemantsverdriet <tom@flowtogether.nl>
  */
-class IndexController extends Controller
+class IndexController extends ActionController
 {
     /**
      * Serves the Vue application shell
-     * @return void The returned value
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@flowtogether.nl>
      */
-    public function index(): void
+    public function index(ServerRequestInterface $request): ResponseInterface
     {
         $this->setMetaTag('viewport', 'width=device-width, initial-scale=1, viewport-fit=cover');
 
@@ -32,6 +38,21 @@ class IndexController extends Controller
         $this->setTitle("Sfen's mannenweekend bingo");
         $this->setMetaTag('description', $metaDescription);
         $this->setMetaTag('og:description', $metaDescription);
-        $this->setMetaTag('og:image', reroute(BASE_PATH . '/src/assets/images/thumbnail.jpeg'));
+        $this->setMetaTag('og:image', reroute(BASE_PATH . '/src/Assets/images/thumbnail.jpeg'));
+
+
+        return $this->respondWithTemplate();
+    }
+
+    /**
+     * Returns the intentionally public routes for this ActionController.
+     * @return array The public routes
+     * @author Tom Niemantsverdriet <tom@flowtogether.nl>
+     */
+    public function getRoutes(): array
+    {
+        return [
+            ControllerRoute::get('/index/index', 'index'),
+        ];
     }
 }

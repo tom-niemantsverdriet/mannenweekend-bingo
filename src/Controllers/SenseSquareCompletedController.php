@@ -2,6 +2,9 @@
 
 namespace TomNiemantsverdriet\MannenweekendBingo\Controllers;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
 use Lumi\Sense\Launcher\SenseAppController;
 use TomNiemantsverdriet\MannenweekendBingo\Models\Static\Square;
 use TomNiemantsverdriet\MannenweekendBingo\Models\Static\User;
@@ -18,10 +21,11 @@ class SenseSquareCompletedController extends SenseAppController
 {
     /**
      * Shows an overview of all completed squares
-     * @return void
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function index(): void
+    public function index(ServerRequestInterface $request): ResponseInterface
     {
         $this->setProperties([
             'model' => SquareCompleted::getModel(),
@@ -31,31 +35,43 @@ class SenseSquareCompletedController extends SenseAppController
             'title' => 'Voltooide vakjes',
             'delete-message' => 'Weet je zeker dat je deze registratie wilt verwijderen?',
         ]);
+
+
+        return $this->respondWithTemplate();
     }
 
     /**
      * Shows the form to add a new completion
-     * @return void
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function add(): void
+    public function add(ServerRequestInterface $request): ResponseInterface
     {
         $this->configureForm();
         $this->setTitle('Vakje afvinken');
+
+
+        return $this->respondWithTemplate();
     }
 
     /**
      * Shows the form to edit an existing completion
-     * @param int $id The identifier of the completion
-     * @return void
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function edit($id): void
+    public function edit(ServerRequestInterface $request): ResponseInterface
     {
+        $id = $request->getAttribute('arguments.0');
+
         $id;
 
         $this->configureForm();
         $this->setTitle('Registratie bewerken');
+
+
+        return $this->respondWithTemplate();
     }
 
     /**
@@ -84,15 +100,19 @@ class SenseSquareCompletedController extends SenseAppController
 
     /**
      * Configures the delete template for a completion
-     * @return void
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function delete(): void
+    public function delete(ServerRequestInterface $request): ResponseInterface
     {
         $this->setProperties([
             'model' => SquareCompleted::getModel(),
             'template' => 'delete',
             'type-name' => 'Registratie',
         ]);
+
+
+        return $this->respondWithTemplate();
     }
 }

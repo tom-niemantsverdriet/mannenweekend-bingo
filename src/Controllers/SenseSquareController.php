@@ -2,6 +2,9 @@
 
 namespace TomNiemantsverdriet\MannenweekendBingo\Controllers;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
 use Lumi\Sense\Launcher\SenseAppController;
 use TomNiemantsverdriet\MannenweekendBingo\Models\Static\Square;
 
@@ -16,10 +19,11 @@ class SenseSquareController extends SenseAppController
 {
     /**
      * Shows an overview of all squares
-     * @return void
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function index(): void
+    public function index(ServerRequestInterface $request): ResponseInterface
     {
         $this->setProperties([
             'model' => Square::getModel(),
@@ -29,31 +33,43 @@ class SenseSquareController extends SenseAppController
             'title' => 'Vakjes',
             'delete-message' => 'Weet je zeker dat je dit vakje wilt verwijderen?',
         ]);
+
+
+        return $this->respondWithTemplate();
     }
 
     /**
      * Shows the form to add a new square
-     * @return void
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function add(): void
+    public function add(ServerRequestInterface $request): ResponseInterface
     {
         $this->configureForm();
         $this->setTitle('Vakje toevoegen');
+
+
+        return $this->respondWithTemplate();
     }
 
     /**
      * Shows the form to edit an existing square
-     * @param int $id The identifier of the square
-     * @return void
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function edit($id): void
+    public function edit(ServerRequestInterface $request): ResponseInterface
     {
+        $id = $request->getAttribute('arguments.0');
+
         $id;
 
         $this->configureForm();
         $this->setTitle('Vakje bewerken');
+
+
+        return $this->respondWithTemplate();
     }
 
     /**
@@ -79,15 +95,19 @@ class SenseSquareController extends SenseAppController
 
     /**
      * Configures the delete template for a square
-     * @return void
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function delete(): void
+    public function delete(ServerRequestInterface $request): ResponseInterface
     {
         $this->setProperties([
             'model' => Square::getModel(),
             'template' => 'delete',
             'type-name' => 'Vakje',
         ]);
+
+
+        return $this->respondWithTemplate();
     }
 }

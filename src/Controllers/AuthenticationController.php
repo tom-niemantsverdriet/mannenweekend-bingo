@@ -2,7 +2,12 @@
 
 namespace TomNiemantsverdriet\MannenweekendBingo\Controllers;
 
-use Lumi\Core\Controller;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+use Lumi\Core\Routing\Route as ControllerRoute;
+
+use Lumi\Core\ActionController;
 use Lumi\SessionManager\Session;
 use TomNiemantsverdriet\MannenweekendBingo\Models\Static\User;
 
@@ -15,16 +20,18 @@ use TomNiemantsverdriet\MannenweekendBingo\Models\Static\User;
  *
  * @author Tom Niemantsverdriet <tom@lumitec.nl>
  */
-class AuthenticationController extends Controller
+class AuthenticationController extends ActionController
 {
     /**
      * Authenticates the participant with the given UUID by storing their identifier in the session.
-     * @param string $uuid The UUID of the participant to authenticate
-     * @return void
+     * @param ServerRequestInterface $request The Controller-local request
+     * @return ResponseInterface The Controller response
      * @author Tom Niemantsverdriet <tom@lumitec.nl>
      */
-    public function login(string $uuid): void
+    public function login(ServerRequestInterface $request): ResponseInterface
     {
+        $uuid = $request->getAttribute('arguments.0');
+
         $user = User::findSingleByFilters(['uuid' => $uuid]);
 
         if ($user !== null) {
@@ -34,6 +41,18 @@ class AuthenticationController extends Controller
         $session = Session::getInstance();
         $session->upgradeToPersistent();
 
-        redirect('/');
+        return $this->respondWithRedirect(reroute('/'));
+    }
+
+    /**
+     * Returns the intentionally public routes for this ActionController.
+     * @return array The public routes
+     * @author Tom Niemantsverdriet <tom@flowtogether.nl>
+     */
+    public function getRoutes(): array
+    {
+        return [
+            ControllerRoute::get('/authentication/login/{uuid}', 'login'),
+        ];
     }
 }
