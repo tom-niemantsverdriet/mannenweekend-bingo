@@ -52,7 +52,7 @@ class IndexController extends ActionController
     public function getRoutes(): array
     {
         return [
-            ControllerRoute::get('/index/index', 'index'),
+            ControllerRoute::get('/', 'index'),
         ];
     }
 }

@@ -44,7 +44,7 @@ class SquareController extends APIController
     public function getRoutes(): array
     {
         return [
-            ControllerRoute::get('/square/index', 'index'),
+            ControllerRoute::get('/square', 'index'),
         ];
     }
 }

@@ -44,7 +44,7 @@ class UserController extends APIController
     public function getRoutes(): array
     {
         return [
-            ControllerRoute::get('/user/index', 'index'),
+            ControllerRoute::get('/user', 'index'),
         ];
     }
 }

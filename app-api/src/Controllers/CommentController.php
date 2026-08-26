@@ -92,7 +92,7 @@ class CommentController extends APIController
     public function getRoutes(): array
     {
         return [
-            ControllerRoute::get('/comment/index', 'index'),
+            ControllerRoute::get('/comment', 'index'),
             ControllerRoute::post('/comment/create', 'create'),
         ];
     }

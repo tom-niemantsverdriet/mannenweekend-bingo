@@ -118,7 +118,7 @@ class CurrentUserController extends APIController
     public function getRoutes(): array
     {
         return [
-            ControllerRoute::get('/current-user/index', 'index'),
+            ControllerRoute::get('/current-user', 'index'),
             ControllerRoute::post('/current-user/subscribe', 'subscribe'),
             ControllerRoute::post('/current-user/unsubscribe', 'unsubscribe'),
         ];

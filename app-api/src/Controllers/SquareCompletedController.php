@@ -161,7 +161,7 @@ class SquareCompletedController extends APIController
     public function getRoutes(): array
     {
         return [
-            ControllerRoute::get('/square-completed/index', 'index'),
+            ControllerRoute::get('/square-completed', 'index'),
             ControllerRoute::post('/square-completed/poll', 'poll'),
             ControllerRoute::post('/square-completed/create', 'create'),
         ];
