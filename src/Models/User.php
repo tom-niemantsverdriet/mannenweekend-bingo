@@ -24,9 +24,9 @@ class User extends Model
         $this->setColumns([
             'user_id' => ['is-auto-id' => true],
             'name' => ['limit' => 100, 'required' => true],
-            'uuid' => ['limit' => 64],
-            'thumbnail' => ['limit' => 255],
-            'notification_url' => 'text',
+            'uuid' => ['type' => 'uuid', 'limit' => 64],
+            'thumbnail' => ['type' => 'image', 'limit' => 255],
+            'notification_url' => ['type' => 'url', 'storage' => ['type' => 'text'], 'length' => 65535],
         ]);
 
         $this->setActiveRecordClass(UserRecord::class);
