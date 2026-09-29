@@ -1,0 +1,19 @@
+{
+    "name": "tomniemantsverdriet/mannenweekend-bingo",
+    "require": {
+        "lumi/common": "^1.0",
+        "lumi/mcp": "1.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "TomNiemantsverdriet\\MannenweekendBingo\\": [
+                "src/",
+                "build/"
+            ],
+            "TomNiemantsverdriet\\MannenweekendBingo\\AppAPI\\": [
+                "app-api/src/",
+                "app-api/build/"
+            ]
+        }
+    }
+}

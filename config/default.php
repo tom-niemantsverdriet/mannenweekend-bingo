@@ -15,6 +15,7 @@ $configuration = [
         'common' => 1.0,
         'bootstrap' => 1.0,
         'sense' => 1.0,
+        'mcp' => null,
 
         // The Vue application is served from the main application and the JSON
         // API runs in its own mount. Both load the flowtogether-vue package

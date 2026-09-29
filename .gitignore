@@ -24,3 +24,4 @@ config/*.php
 !config/default.php
 build/
 */gen/
+/vendor/
